@@ -5,8 +5,11 @@ Just me working through a coding interview book.
 
 ### Dependencies
 ```bash
-brew install python pipenv # Python 3
-pipenv install # install Python dependencies
+brew install python pipenv # Note that `brew install python` now installs Python 3
+
+# Install all dependencies (including dev dependencies) as described in Pipfile (and Pipfile.lock)
+# Extend the timeout for venv creation, as this can take awhile
+PIPENV_TIMEOUT=600 pipenv install --dev
 ```
 
 And to add more Python dependencies:

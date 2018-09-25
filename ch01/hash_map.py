@@ -3,6 +3,7 @@ from typing import Generic, List, Optional, Tuple, TypeVar
 K = TypeVar("K")
 V = TypeVar("V")
 
+
 class HashMap(Generic[K, V]):
     def __init__(self, *entries: Tuple[K, V]) -> None:
         num_buckets = int(len(entries) / 2)

@@ -1,14 +1,17 @@
 from collections import defaultdict
 
+
 # Is Unique: Implement an algorithm to determine if a string has all unique characters. What if
 # you cannot use additional data structures?
 def all_unique_chars(s: str) -> bool:
     return len(list(s)) == len(set(s))
 
+
 # Check Permutation: Given two strings,write a method to decide if one is a permutation of the
 # other.
 def is_permutation(s1: str, s2: str) -> bool:
     return sorted(s1) == sorted(s2)
+
 
 # URLify: Write a method to replace all spaces in a string with '%20'. You may assume that the
 # string has sufficient space at the end to hold the additional characters,and that you are given
@@ -16,6 +19,7 @@ def is_permutation(s1: str, s2: str) -> bool:
 # that you can perform this operation in place.)
 def url_encode_spaces(s: str) -> str:
     return s.replace(" ", "%20")
+
 
 # Palindrome Permutation: Given a string, write a function to check if it is a permutation of a
 # palin­drome. A palindrome is a word or phrase that is the same forwards and backwards. A
@@ -27,6 +31,7 @@ def is_palindrome_permutation(s: str) -> bool:
         letter_counts[c] += 1
     odd_counts = [v for v in letter_counts.values() if v % 2 == 1]
     return len(odd_counts) <= 1
+
 
 # One Away: There are three types of edits that can be performed on strings: insert a character,
 # remove a character, or replace a character. Given two strings, write a function to check if they
@@ -43,6 +48,7 @@ def within_one_edit(s1: str, s2: str) -> bool:
     else:
         return False
 
+
 def _at_most_one_replaced_char(s1: str, s2: str) -> bool:
     edits = 0
     s1_length = len(s1)
@@ -55,6 +61,7 @@ def _at_most_one_replaced_char(s1: str, s2: str) -> bool:
             if edits > 1:
                 return False
     return True
+
 
 def _left_str_has_one_removed_char(s1: str, s2: str) -> bool:
     edits = 0
@@ -74,6 +81,7 @@ def _left_str_has_one_removed_char(s1: str, s2: str) -> bool:
                 return False
             s2_idx += 1
     return True
+
 
 # String Compression: Implement a method to perform basic string compression using the counts of
 # repeated characters. For example, the string aabcccccaaa would become a2blc5a3. If the
@@ -99,6 +107,7 @@ class CompressedString(object):
 
     def __str__(self) -> str:
         return ''.join([char * count for char, count in self._compressed])
+
 
 # String Rotation: Assume you have a method isSubstring, which checks if one word is a substring of
 # another. Given two strings, s1 and s2, write code to check if s2 is a rotation of s1 using only

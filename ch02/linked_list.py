@@ -2,6 +2,7 @@ from typing import Callable, Generic, List, Optional, TypeVar
 
 T = TypeVar("T")
 
+
 class LinkedList(Generic[T]):
     def __init__(self, *items: T) -> None:
         self._next: Optional[LinkedList[T]] = None
@@ -10,13 +11,13 @@ class LinkedList(Generic[T]):
             current = self
             current._value = items[0]
             for item in items[1:]:
-                next = LinkedList[T](item)
-                current._next = next
-                current = next
-    
+                next_node = LinkedList[T](item)
+                current._next = next_node
+                current = next_node
+
     def for_each(self, func: Callable[[T], None]) -> None:
         current = self
-        while current != None:
+        while current is not None:
             func(current._value)
             current = current._next
 
@@ -32,7 +33,7 @@ class LinkedList(Generic[T]):
 
     def append(self, item: T): # -> LinkedList[T]: <= why doesn't this work?
         current = self
-        while current._next != None:
+        while current._next is not None:
             current = current._next
         current._next = LinkedList[T](item)
         return self
@@ -45,8 +46,10 @@ class LinkedList(Generic[T]):
 
     def __len__(self):
         out = 0
+
         def increment(_: T) -> None:
             nonlocal out
             out += 1
+
         self.for_each(increment)
         return out

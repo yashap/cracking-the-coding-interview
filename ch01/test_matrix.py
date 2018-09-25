@@ -1,5 +1,6 @@
 import ch01.matrix as m
 
+
 def test_rotate_matrix():
     matrix = [
         [10],
@@ -31,10 +32,12 @@ def test_rotate_matrix():
     ]
     assert m.rotate_matrix(matrix) == rotated
 
+
 def test_rotate_matrix_edge_cases():
     assert m.rotate_matrix([]) == []
-    assert m.rotate_matrix([[]]) == [] # 1 row, 0 columns // 0 rows, therefore can't represent columns
-    assert m.rotate_matrix([[], []]) == [] # 2 rows, 0 columns // 0 rows, therefore can't represent columns
+    assert m.rotate_matrix([[]]) == []  # 1 row, 0 columns // 0 rows, therefore can't represent columns
+    assert m.rotate_matrix([[], []]) == []  # 2 rows, 0 columns // 0 rows, therefore can't represent columns
+
 
 def test_zero_matrix():
     matrix = [
@@ -50,16 +53,17 @@ def test_zero_matrix():
     m.zero_matrix(matrix)
     assert matrix == zeroed_matrix
 
+
 def test_zero_matrix_edge_cases():
     # nothing to zero
-    matrix = [[1, 2, 3], [4, 5, 6],]
+    matrix = [[1, 2, 3], [4, 5, 6]]
     m.zero_matrix(matrix)
-    assert matrix == [[1, 2, 3], [4, 5, 6],]
+    assert matrix == [[1, 2, 3], [4, 5, 6]]
 
     # empty rows
-    matrix = [[], [],]
+    matrix = [[], []]
     m.zero_matrix(matrix)
-    assert matrix == [[], [],]
+    assert matrix == [[], []]
 
     # empty matrix
     matrix = []

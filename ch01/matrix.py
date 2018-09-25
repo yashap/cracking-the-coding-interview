@@ -2,6 +2,7 @@ from typing import Generic, List, TypeVar
 
 T = TypeVar("T")
 
+
 # Rotate Matrix: Given an image represented by an NxN matrix, where each pixel in the image is 4
 # bytes, write a method to rotate the image by 90 degrees.
 def rotate_matrix(matrix: List[List[T]]) -> List[List[T]]:
@@ -16,6 +17,7 @@ def rotate_matrix(matrix: List[List[T]]) -> List[List[T]]:
             inverse_row_idx = num_rows - 1 - row_idx
             out[col_idx][inverse_row_idx] = value # note [col][row] vs. [row][col]
     return out
+
 
 # Zero Matrix: Write an algorithm such that if an element in an MxN matrix is 0, its entire row and
 # column are set to 0.
