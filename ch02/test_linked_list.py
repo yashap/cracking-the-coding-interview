@@ -2,8 +2,19 @@ from ch02.linked_list import LinkedList
 import pytest
 
 
+def test_iter():
+    ll_iter = LinkedList(10, 11, 12).__iter__()
+    assert ll_iter.__next__() == 10
+    assert ll_iter.__next__() == 11
+    assert ll_iter.__next__() == 12
+    with pytest.raises(StopIteration):
+        ll_iter.__next__()
+    with pytest.raises(StopIteration):
+        ll_iter.__next__()
+
+
 def test_to_list():
-    assert LinkedList(10, 11, 12).to_list() == [10, 11, 12]
+    assert list(LinkedList(10, 11, 12)) == [10, 11, 12]
 
 
 def test_to_str():

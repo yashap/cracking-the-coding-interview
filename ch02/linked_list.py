@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, Generic, List, Optional, Set, TypeVar, Union
+from typing import Any, Callable, Dict, Generic, Optional, Set, TypeVar
 
 T = TypeVar("T")
 
@@ -18,6 +18,22 @@ class Node(Generic[T]):
         self._next = next_node
 
 
+class LinkedListIterator(Generic[T]):
+    def __init__(self, node: Optional[Node[T]]) -> None:
+        self._current_node: Optional[Node[T]] = node
+
+    def __iter__(self) -> "LinkedListIterator[T]":
+        return self
+
+    def __next__(self) -> T:
+        if self._current_node is None:
+            raise StopIteration()
+        else:
+            current_value = self._current_node.value()
+            self._current_node = self._current_node.next()
+            return current_value
+
+
 class LinkedList(Generic[T]):
     def __init__(self, *items: T) -> None:
         self._head: Optional[Node[T]] = None
@@ -30,15 +46,8 @@ class LinkedList(Generic[T]):
                 current_node = next_node
 
     def for_each(self, func: Callable[[T], None]) -> None:
-        current_node: Optional[Node[T]] = self._head
-        while current_node is not None:
-            func(current_node.value())
-            current_node = current_node.next()
-
-    def to_list(self) -> List[T]:
-        out: List[T] = []
-        self.for_each(out.append)
-        return out
+        for node_value in self:
+            func(node_value)
 
     def is_empty(self) -> bool:
         return self._head is None
@@ -111,14 +120,10 @@ class LinkedList(Generic[T]):
     def distinct(self) -> "LinkedList[T]":
         seen: Set[T] = set()
         out: LinkedList[T] = LinkedList()
-
-        def append_if_not_seen(item: T) -> None:
-            nonlocal out
-            if item not in seen:
-                out.append(item)
-                seen.add(item)
-
-        self.for_each(append_if_not_seen)
+        for node_value in self:
+            if node_value not in seen:
+                out.append(node_value)
+                seen.add(node_value)
         return out
 
     # Return Kth to Last: Implement an algorithm to find the kth to last element of a singly linked list.
@@ -132,16 +137,11 @@ class LinkedList(Generic[T]):
     def partition(self, value: T, left_is_smaller: Callable[[T, T], bool]) -> "LinkedList[T]":
         below: LinkedList[T] = LinkedList()
         above: LinkedList[T] = LinkedList()
-
-        def add_to_partition(item: T) -> None:
-            nonlocal below, above
-            if left_is_smaller(item, value):  # TODO: pass in a function that does this comparison for any T
-                below.append(item)
+        for node_value in self:
+            if left_is_smaller(node_value, value):
+                below.append(node_value)
             else:
-                above.append(item)
-
-        self.for_each(add_to_partition)
-
+                above.append(node_value)
         final_below_node: Optional[Node[T]] = below._get_node(len(below) - 1)
         first_above_node: Optional[Node[T]] = above._get_node(0)
         if final_below_node is not None and first_above_node is not None:
@@ -162,13 +162,10 @@ class LinkedList(Generic[T]):
 
     # Intersection: Given two (singly) linked lists, determine if the two lists intersect. Return the intersecting node.
     def intersects_with(self, other: "LinkedList[T]") -> Optional[T]:
-        other_items: Set[T] = set(other.to_list())
-        current_node: Optional[Node[T]] = self._head
-        while current_node is not None:
-            current_value = current_node.value()
-            if current_value in other_items:
-                return current_value
-            current_node = current_node.next()
+        other_node_values: Set[T] = set(other)
+        for node_value in self:
+            if node_value in other_node_values:
+                return node_value
         return None
 
     # Loop Detection: Given a circular linked list, implement an algorithm that returns the node at the beginning of the
@@ -183,30 +180,26 @@ class LinkedList(Generic[T]):
     # Output: C
     def has_loop(self) -> bool:
         current_node: Optional[Node[T]] = self._head
-        seen: Dict[str, List[Node[T]]] = {}
+        seen: Set[Node[T]] = set()
         while current_node is not None:
-            node_address: str = current_node.__repr__()
-            seen_nodes: List[Node[T]] = seen.get(node_address, [])  # Almost for sure a list of length 0 or 1
-            for node in seen_nodes:
-                if node is current_node:
-                    return True
-            seen_nodes.append(current_node)
-            seen[node_address] = seen_nodes
-            current_node = current_node.next()
+            if current_node in seen:
+                return True
+            else:
+                seen.add(current_node)
+                current_node = current_node.next()
         return False
 
     def __str__(self) -> str:
-        return "LinkedList({})".format(", ".join([str(v) for v in self.to_list()]))
+        return "LinkedList({})".format(", ".join([str(v) for v in list(self)]))
 
     def __len__(self) -> int:
         out = 0
-
-        def increment(_: T) -> None:
-            nonlocal out
+        for _ in self:
             out += 1
-
-        self.for_each(increment)
         return out
 
     def __eq__(self, other: Any) -> bool:
-        return other is not None and type(other) is LinkedList and self.to_list() == other.to_list()
+        return other is not None and type(other) is LinkedList and list(self) == list(other)
+
+    def __iter__(self) -> LinkedListIterator[T]:
+        return LinkedListIterator[T](self._head)
