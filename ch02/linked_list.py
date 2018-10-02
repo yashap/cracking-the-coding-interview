@@ -1,21 +1,7 @@
-from typing import Any, Callable, Dict, Generic, Optional, Set, TypeVar
+from ch02.node import Node
+from typing import Any, Callable, Generic, Optional, Set, TypeVar
 
 T = TypeVar("T")
-
-
-class Node(Generic[T]):
-    def __init__(self, value: T) -> None:
-        self._next: Optional[Node[T]] = None
-        self._value: T = value
-
-    def value(self) -> T:
-        return self._value
-
-    def next(self) -> "Optional[Node[T]]":
-        return self._next
-
-    def set_next(self, next_node: "Optional[Node[T]]") -> None:
-        self._next = next_node
 
 
 class LinkedListIterator(Generic[T]):
@@ -59,9 +45,8 @@ class LinkedList(Generic[T]):
         if self._head is None:
             return None
         else:
-            out: Optional[LinkedList[T]] = LinkedList()
-            if out is not None:  # make mypy happy, even though this is impossible
-                out._head = self._head.next()
+            out = LinkedList[T]()
+            out._head = self._head.next()
             return out
 
     def prepend(self, item: T) -> "LinkedList[T]":
@@ -85,9 +70,9 @@ class LinkedList(Generic[T]):
 
     def delete(self, index: int) -> None:
         err = IndexError("index out of bounds")
-        if index == 0 and self._head is not None:  # make mypy happy
+        if index == 0 and self._head is not None:  # delete first item, if there is one
             self._head = self._head.next()
-        elif index > 0 and self._head is not None:  # handle deleting any item from index 1 onwards
+        elif index > 0 and self._head is not None:  # delete any item from index 1 onwards
             current_index = 1
             prev_node: Node[T] = self._head
             current_node: Optional[Node[T]] = self._head.next()
@@ -98,8 +83,8 @@ class LinkedList(Generic[T]):
                 prev_node = current_node
                 current_node = current_node.next()
                 current_index += 1
-            raise err
-        else:
+            raise err  # tried to delete index higher than exists
+        else:  # tried to delete from empty list, or tried to delete negative index
             raise err
 
     def _get_node(self, index: int) -> Optional[Node[T]]:

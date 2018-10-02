@@ -1,9 +1,12 @@
-from ch02.linked_list import LinkedList
+from ch03.queue import Queue
 
 
 def main():
-    ll = LinkedList(10, 11, 12, 13)
-    print(str(ll))
+    queue = Queue[int](10, 11, 12)
+    queue.add(9)
+    for item in queue:
+        print(item)
+    print(queue.remove())
 
 
 if __name__ == "__main__":
