@@ -1,7 +1,8 @@
 from ch02.node import Node
+from util.comparable import Comparable
 from typing import Any, Callable, Generic, Optional, Set, TypeVar
 
-T = TypeVar("T")
+T = TypeVar("T", bound=Comparable)
 
 
 class LinkedListIterator(Generic[T]):
@@ -119,11 +120,11 @@ class LinkedList(Generic[T]):
     # nodes greater than or equal to x. If x is contained within the list, the values of x only need to be after the
     # elements less than x (see below). The partition element x can appear anywhere in the "right partition"; it does
     # not need to appear between the left and right partitions.
-    def partition(self, value: T, left_is_smaller: Callable[[T, T], bool]) -> "LinkedList[T]":
+    def partition(self, value: T) -> "LinkedList[T]":
         below: LinkedList[T] = LinkedList()
         above: LinkedList[T] = LinkedList()
         for node_value in self:
-            if left_is_smaller(node_value, value):
+            if node_value < value:
                 below.append(node_value)
             else:
                 above.append(node_value)

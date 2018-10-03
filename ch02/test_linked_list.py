@@ -138,13 +138,13 @@ def test_distinct():
 
 
 def test_partition():
-    assert LinkedList(10, 8, 6, 7, 11, 5).partition(10, lambda l, r: l < r) == LinkedList(8, 6, 7, 5, 10, 11)
-    assert LinkedList[int]().partition(10, lambda l, r: l < r) == LinkedList[int]()
-    assert LinkedList(10).partition(10, lambda l, r: l < r) == LinkedList(10)
-    assert LinkedList(5, 10, 15).partition(5, lambda l, r: l < r) == LinkedList(5, 10, 15)
-    assert LinkedList(5, 10, 15).partition(10, lambda l, r: l < r) == LinkedList(5, 10, 15)
-    assert LinkedList(5, 10, 15).partition(15, lambda l, r: l < r) == LinkedList(5, 10, 15)
-    assert LinkedList(15, 10, 5).partition(11, lambda l, r: l < r) == LinkedList(10, 5, 15)
+    assert LinkedList(10, 8, 6, 7, 11, 5).partition(10) == LinkedList(8, 6, 7, 5, 10, 11)
+    assert LinkedList[int]().partition(10) == LinkedList[int]()
+    assert LinkedList(10).partition(10) == LinkedList(10)
+    assert LinkedList(5, 10, 15).partition(5) == LinkedList(5, 10, 15)
+    assert LinkedList(5, 10, 15).partition(10) == LinkedList(5, 10, 15)
+    assert LinkedList(5, 10, 15).partition(15) == LinkedList(5, 10, 15)
+    assert LinkedList(15, 10, 5).partition(11) == LinkedList(10, 5, 15)
 
 
 def test_is_palindrome():

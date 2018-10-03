@@ -6,8 +6,9 @@ name = "pypi"
 [packages]
 
 [dev-packages]
-pytest = "==3.8.*"
 mypy = "==0.630"
+pytest = "==3.8.*"
+typing-extensions = "==3.6.*"
 
 [requires]
 python_version = "3.7"

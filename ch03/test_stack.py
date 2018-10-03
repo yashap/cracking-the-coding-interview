@@ -76,3 +76,18 @@ def test_peek():
     stack.push(12)
     assert stack.peek() == 12
     assert stack.peek() == 12
+
+
+def test_sorted():
+    assert Stack(10, 1, 5, 7).sorted() == Stack(1, 5, 7, 10)
+    assert Stack(10, 1, 7, 5, 7).sorted() == Stack(1, 5, 7, 7, 10)
+    assert Stack().sorted() == Stack()
+    assert Stack(5).sorted() == Stack(5)
+    assert Stack(5, 6).sorted() == Stack(5, 6)
+    assert Stack(6, 5).sorted() == Stack(5, 6)
+
+
+def test_sorted_does_not_mutate():
+    stack = Stack(10, 1, 5, 7)
+    stack.sorted()
+    assert stack == Stack(10, 1, 5, 7)

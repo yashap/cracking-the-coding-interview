@@ -1,12 +1,11 @@
-from ch03.queue import Queue
+from ch03.stack import Stack
 
 
 def main():
-    queue = Queue[int](10, 11, 12)
-    queue.add(9)
-    for item in queue:
+    stack = Stack[int](10, 11, 12)
+    stack.push(9)
+    for item in stack:
         print(item)
-    print(queue.remove())
 
 
 if __name__ == "__main__":

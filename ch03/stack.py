@@ -1,7 +1,9 @@
 from ch02.node import Node
+from util.comparable import Comparable
 from typing import Any, Generic, Optional, TypeVar
+from copy import deepcopy
 
-T = TypeVar("T")
+T = TypeVar("T", bound=Comparable)
 
 
 class StackIterator(Generic[T]):
@@ -54,6 +56,21 @@ class Stack(Generic[T]):
     def is_empty(self) -> bool:
         return self._top is None
 
+    def sorted(self) -> "Stack[T]":
+        stack = deepcopy(self)
+        sorted_stack = Stack[T]()
+        while not stack.is_empty():
+            item = stack.pop()
+            number_popped = 0
+            while not sorted_stack.is_empty() and sorted_stack.peek() > item:
+                stack.push(sorted_stack.pop())
+                number_popped += 1
+            sorted_stack.push(item)
+            while number_popped > 0:
+                sorted_stack.push(stack.pop())  # These items came from sorted_stack, so they're also sorted
+                number_popped -= 1
+        return sorted_stack
+
     def __str__(self) -> str:
         return "Stack({})".format(", ".join([str(v) for v in list(self)]))
 
@@ -68,10 +85,3 @@ class Stack(Generic[T]):
 
     def __iter__(self) -> StackIterator[T]:
         return StackIterator[T](self._top)
-
-
-# Stack of Plates: Imagine a (literal) stack of plates. If the stack gets too high, it might topple. Implement this
-# with a set of stacks, where a new stack gets created past some max size. The public API should behave the same as a
-# single stack
-class SetOfStacks(Generic[T]):
-    pass
